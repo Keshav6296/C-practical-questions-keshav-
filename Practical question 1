@@ -1,0 +1,42 @@
+#include <iostream>
+#include <cmath>   // For pow() function
+#include <cstdlib> // For atoi() function
+
+using namespace std;
+
+// Function to compute the sum of the series
+double computeSeries(int n) {
+    double sum = 0.0;
+    for (int i = 1; i <= n; i++) {
+        double term = pow(-1, i + 1) * (1.0 / pow(i, i));
+        sum += term;
+    }
+    return sum;
+}
+
+int main(int argc, char *argv[]) {
+    int n;
+
+    // Check if command-line argument is provided
+    if (argc > 1) {
+        n = atoi(argv[1]); // Convert argument to integer
+    } else {
+        // Prompt the user to enter n
+        cout << "Enter the number of terms (n): ";
+        cin >> n;
+    }
+
+    // Validate input
+    if (n <= 0) {
+        cout << "Please enter a positive integer greater than 0." << endl;
+        return 1; // Exit with error code
+    }
+
+    // Compute the sum of the series
+    double result = computeSeries(n);
+
+    // Display the result
+    cout << "Sum of the first " << n << " terms of the series: " << result << endl;
+
+    return 0;
+}
