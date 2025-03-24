@@ -1,0 +1,37 @@
+#include <iostream>
+#include <map>
+#include <cctype>
+
+int main(int argc, char* argv[]) {
+    std::map<char, int> frequency; // Map to store letter frequencies
+
+    // Initialize frequency map for all letters (optional, but ensures all letters are displayed)
+    for (char ch = 'a'; ch <= 'z'; ++ch) {
+        frequency[ch] = 0;
+    }
+
+    // Process command-line arguments
+    for (int i = 1; i < argc; ++i) {
+        std::string arg = argv[i];
+        for (char ch : arg) {
+            if (std::isalpha(ch)) { // Check if character is an alphabet
+                ch = std::tolower(ch); // Convert to lowercase for case insensitivity
+                frequency[ch]++;
+            }
+        }
+    }
+
+    // Print the frequency table
+    std::cout << "Letter Frequency Table:\n";
+    std::cout << "----------------------\n";
+    std::cout << "Letter | Count\n";
+    std::cout << "----------------------\n";
+
+    for (const auto& pair : frequency) {
+        if (pair.second > 0) { // Only print letters that appear in input
+            std::cout << "   " << pair.first << "   |   " << pair.second << "\n";
+        }
+    }
+
+    return 0;
+}
