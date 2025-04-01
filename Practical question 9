@@ -1,0 +1,121 @@
+#include <iostream> #include <vector> #include <stdexcept> using namespace std;
+
+class Matrix { private: vector<vector<int>> data; int rows, cols;
+
+public: Matrix(int r, int c) : rows(r), cols(c), data(r, vector<int>(c)) {}
+
+void inputMatrix() {
+    cout << "Enter elements of " << rows << "x" << cols << " matrix:\n";
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            cin >> data[i][j];
+        }
+    }
+}
+
+void displayMatrix() const {
+    for (const auto &row : data) {
+        for (int val : row) {
+            cout << val << " ";
+        }
+        cout << endl;
+    }
+}
+
+Matrix operator+(const Matrix &other) const {
+    if (rows != other.rows || cols != other.cols)
+        throw invalid_argument("Matrix dimensions do not match for addition.");
+    Matrix result(rows, cols);
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            result.data[i][j] = data[i][j] + other.data[i][j];
+        }
+    }
+    return result;
+}
+
+Matrix operator*(const Matrix &other) const {
+    if (cols != other.rows)
+        throw invalid_argument("Matrix dimensions do not match for multiplication.");
+    Matrix result(rows, other.cols);
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < other.cols; j++) {
+            result.data[i][j] = 0;
+            for (int k = 0; k < cols; k++) {
+                result.data[i][j] += data[i][k] * other.data[k][j];
+            }
+        }
+    }
+    return result;
+}
+
+Matrix transpose() const {
+    Matrix result(cols, rows);
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            result.data[j][i] = data[i][j];
+        }
+    }
+    return result;
+}
+
+};
+
+int main() { int choice, r1, c1, r2, c2;
+
+try {
+    cout << "Enter rows and columns for first matrix: ";
+    cin >> r1 >> c1;
+    Matrix m1(r1, c1);
+    m1.inputMatrix();
+    
+    cout << "Enter rows and columns for second matrix: ";
+    cin >> r2 >> c2;
+    Matrix m2(r2, c2);
+    m2.inputMatrix();
+
+    do {
+        cout << "\nMenu:\n1. Sum\n2. Product\n3. Transpose of First Matrix\n4. Transpose of Second Matrix\n5. Exit\nEnter choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1: {
+                Matrix sum = m1 + m2;
+                cout << "Resultant Sum Matrix:\n";
+                sum.displayMatrix();
+                break;
+            }
+            case 2: {
+                Matrix product = m1 * m2;
+                cout << "Resultant Product Matrix:\n";
+                product.displayMatrix();
+                break;
+            }
+            case 3: {
+                Matrix transposed = m1.transpose();
+                cout << "Transpose of First Matrix:\n";
+                transposed.displayMatrix();
+                break;
+            }
+            case 4: {
+                Matrix transposed = m2.transpose();
+                cout << "Transpose of Second Matrix:\n";
+                transposed.displayMatrix();
+                break;
+            }
+            case 5:
+                cout << "Exiting program.\n";
+                break;
+            default:
+                cout << "Invalid choice. Try again.\n";
+        }
+    } while (choice != 5);
+}
+catch (const exception &e) {
+    cout << "Error: " << e.what() << endl;
+}
+
+return 0;
+
+}
+
