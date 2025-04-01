@@ -1,0 +1,36 @@
+#include <iostream>
+#include <vector>
+
+// Iterative binary search function
+int binarySearchIterative(const std::vector<int>& arr, int target) {
+    int left = 0;
+    int right = arr.size() - 1;
+
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+
+        if (arr[mid] == target) {
+            return mid; // Element found
+        } else if (arr[mid] > target) {
+            right = mid - 1; // Search in the left half
+        } else {
+            left = mid + 1; // Search in the right half
+        }
+    }
+
+    return -1; // Element is not present in the array
+}
+
+int main() {
+    std::vector<int> arr = {2, 3, 4, 10, 40};
+    int target = 10;
+
+    int result = binarySearchIterative(arr, target);
+    if (result != -1) {
+        std::cout << "Element found at index " << result << std::endl;
+    } else {
+        std::cout << "Element not found in the array" << std::endl;
+    }
+
+    return 0;
+}
